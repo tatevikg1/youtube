@@ -12,6 +12,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'name' => 'YouTube Studio',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -43,6 +44,10 @@ return [
             'rules' => [
             ],
         ],
+        'assetManager' => [
+            'appendTimestamp' =>true,
+        ],
+
     ],
     'params' => $params,
 ];

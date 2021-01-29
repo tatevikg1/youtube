@@ -9,8 +9,10 @@
             'class' => 'd-flex flex-column nav-pills'
         ],
         'items' => [
-            ['label' => 'Dashboard', 'url' => ['/site/index']],
-            ['label' => 'Videos', 'url' => ['/videos/index']]
+            ['label' => 'Dashboard',    'url' => ['/site/index']],
+            ['label' => 'Videos',       'url' => ['/video/index']],
+            ['label' => 'Playlists',    'url' => ['/playlist/index']],
+            ['label' => 'Comments',     'url' => ['/comment/index']]
         ]
     ])?>
 
