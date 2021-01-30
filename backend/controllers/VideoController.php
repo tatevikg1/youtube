@@ -4,12 +4,11 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Video;
-use Symfony\Component\Console\Helper\Dumper;
+// use GuzzleHttp\Psr7\UploadedFile;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
 
 /**
@@ -72,13 +71,9 @@ class VideoController extends Controller
         $model->video = UploadedFile::getInstanceByName('video');
 
         if (Yii::$app->request->isPost && $model->save()) {
-
-
-            return $this->redirect(['view', 'id' => $model->video_id]);
+          
+            return $this->redirect(['update', 'id' => $model->video_id]);
         }
-
-        // var_dump($model->video);
-        // exit;
 
         return $this->render('create', [
             'model' => $model,

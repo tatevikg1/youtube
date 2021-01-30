@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="text-muted">Your videos will be private until you publish them.</p>
 
         <?php \yii\bootstrap4\ActiveForm::begin([
-            'options' => ['enctype' => 'mutipart/form-data']
+            'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
 
         <button class="btn btn-primary btn-file">
