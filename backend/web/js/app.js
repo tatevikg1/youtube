@@ -1,19 +1,10 @@
-'use strict';
 
-$(document).ready(function(){
+$(function () {
+    'use strict';
+    $('#videoFile').change(ev => {    
 
-    $(function () {
-    
-        $('#videoFile').change(ev => {
-            // ev.preventDefault();
-    
-            // alert('change');
-    
-            $(ev.target).closest('form').trigger('submit');
-    
-        })
-    
-    });
+        $(ev.target).closest('form').trigger('submit');
+    })
 });
 
 

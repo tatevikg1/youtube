@@ -126,8 +126,9 @@ class Video extends \yii\db\ActiveRecord
         if(!$saved){
             return false;
         }
+        
 
-        if($this->isNewRecord){
+        if(true){ // $this->isNewRecord  enstead of true
             $videoPath = Yii::getAlias('@frontend/web/storage/videos/'. $this->video_id .'.mp4');
            // if the video directory does not exists create it
             if(!is_dir(dirname($videoPath))){
@@ -135,6 +136,8 @@ class Video extends \yii\db\ActiveRecord
             }
             $this->video->saveAs($videoPath);
         }
+        var_dump($videoPath);
+        die;
 
         return true;
     }
