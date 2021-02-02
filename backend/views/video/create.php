@@ -23,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <p class="m-0">Drag and drop video files to upload</p>
         <p class="text-muted">Your videos will be private until you publish them.</p>
 
-        <?php \yii\bootstrap4\ActiveForm::begin([
+        <?php $form = \yii\bootstrap4\ActiveForm::begin([
             'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
+
+        <?php echo $form->errorSummary($model) ?>
 
         <div class="btn btn-primary btn-file" id="selectVideoFile">
             Select file

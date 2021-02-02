@@ -1,9 +1,8 @@
 <?php
-
 /* @var $this yii\web\View */
-
 $this->title = 'YouTube';
 ?>
+
 <div class="site-index">
 
     <div class="jumbotron">

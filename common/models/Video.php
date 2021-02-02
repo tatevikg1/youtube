@@ -6,6 +6,8 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\FileHelper;
+use yii\imagine\Image;
+use Imagine\Image\Box;
 
 /**
  * This is the model class for table "{{%video}}".
@@ -34,6 +36,11 @@ class Video extends \yii\db\ActiveRecord
     public $video;
 
     /**
+    * @var  \yii\web\UploadedFile
+    */
+    public $thumbnail;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -42,7 +49,6 @@ class Video extends \yii\db\ActiveRecord
     }
 
     /**
-    * 
     */ 
     public function behaviors()
     {
@@ -69,7 +75,17 @@ class Video extends \yii\db\ActiveRecord
             [['video_id'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_UNPUBLISHED],
             ['has_thumbnail', 'default', 'value' => 0],
+            // ['thumbnail', 'image'],
+            // ['video', 'file', 'extensions' => ['mp4']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
+        ];
+    }
+
+    public function getStatusLabels()
+    {
+        return [
+            self::STATUS_UNPUBLISHED => 'Unpublished',
+            self::STATUS_PUBLISHED => 'Published',
         ];
     }
 
@@ -89,6 +105,7 @@ class Video extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'thumbnail' => 'Thumbnail',
         ];
     }
 
@@ -114,11 +131,16 @@ class Video extends \yii\db\ActiveRecord
 
     public function save($runValidation = true, $attributeNames = null)
     {
-
-        if($this->isNewRecord){
+        $newRec = $this->isNewRecord;
+        
+        if($newRec){
             $this->video_id = Yii::$app->security->generateRandomString(8);
             $this->title = $this->video->name;
             $this->video_name = $this->video->name;
+        }
+
+        if($this->thumbnail){
+            $this->has_thumbnail = 1;
         }
 
         $saved =  parent::save($runValidation, $attributeNames);
@@ -128,16 +150,25 @@ class Video extends \yii\db\ActiveRecord
         }
         
 
-        if(true){ // $this->isNewRecord  enstead of true
+        if($newRec){ // $this->isNewRecord  enstead of true
             $videoPath = Yii::getAlias('@frontend/web/storage/videos/'. $this->video_id .'.mp4');
-           // if the video directory does not exists create it
+            // if the video directory does not exists create it
             if(!is_dir(dirname($videoPath))){
                 FileHelper::createDirectory(dirname($videoPath));
             }
             $this->video->saveAs($videoPath);
         }
-        echo get_current_user();
-        die;
+
+        if($this->thumbnail){
+            $thumbnailPath = Yii::getAlias('@frontend/web/storage/thumbs/'. $this->video_id .'.jpg');
+            // if the video directory does not exists create it
+            if(!is_dir(dirname($thumbnailPath))){
+                FileHelper::createDirectory(dirname($thumbnailPath));
+            }
+
+            $this->thumbnail[0]->saveAs($thumbnailPath);
+            Image::getImagine()->open($thumbnailPath)->thumbnail(new Box(1280, 1280))->save();
+        }
 
         return true;
     }
@@ -145,5 +176,12 @@ class Video extends \yii\db\ActiveRecord
     public function getVideoLink()
     {
         return Yii::$app->params['frontendUrl'] . 'storage/videos/' . $this->video_id . '.mp4';
+    }
+
+    public function getThumbnailLink()
+    {
+        return $this->has_thumbnail 
+            ? Yii::$app->params['frontendUrl'] . 'storage/thumbs/' . $this->video_id . '.jpg' 
+            : '';
     }
 }
