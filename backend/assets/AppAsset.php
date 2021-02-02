@@ -10,14 +10,14 @@ use yii\web\AssetBundle;
 class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
-    public $baseUrl = '@web';
-    public $css = [
+    public $baseUrl  = '@web';
+    public $css      = [
         'css/site.css',
     ];
-    public $js = [
+    public $js       = [
         'js/app.js'
     ];
-    public $depends = [
+    public $depends  = [
         'yii\web\YiiAsset',
         'yii\bootstrap4\BootstrapAsset',
     ];

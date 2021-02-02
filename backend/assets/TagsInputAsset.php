@@ -11,14 +11,8 @@ use yii\web\JqueryAsset;
 class TagsInputAsset extends AssetBundle
 {
     public $basePath = '@webroot/tagsinput';
-    public $baseUrl = '@web/tagsinput';
-    public $css = [
-        'tagsinput.css',
-    ];
-    public $js = [
-        'tagsinput.js'
-    ];
-    public $depends = [
-        JqueryAsset::class
-    ];
+    public $baseUrl  = '@web/tagsinput';
+    public $css      = [ 'tagsinput.css', ];
+    public $js       = [ 'tagsinput.js' ];
+    public $depends  = [ JqueryAsset::class  ];
 }

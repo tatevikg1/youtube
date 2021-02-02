@@ -13,10 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Video', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
+    <p><?= Html::a('Create Video', ['create'], ['class' => 'btn btn-success']) ?> </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,27 +21,33 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'video_id',
+                'attribute' => 'title',
                 'content' => function($model){
                     return $this->render('_video_item', ['model' => $model]);
                 }
             ],
-            // 'title',
-            // 'description:ntext',
-            // 'tags',
+
             [
                 'attribute' => 'status',
                 'content' => function($model){
                     return $model->getStatusLabels()[$model->status];
                 }
             ],
-            //'has_thumbnail',
-            //'video_name',
-            //'created_by',
+
             'created_at:datetime',
             'updated_at:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttons' => [
+                    'delete' => function($url){
+                        return Html::a( '<i class="fas fa-trash-alt"></i>', $url, [
+                            'data-method' => 'post',
+                            'data-confirm'=> 'Are you sure?'
+                        ]);
+                    }
+                ]
+            ],
         ],
     ]); ?>
 

@@ -42,6 +42,11 @@ return [
             'rules' => [
             ],
         ],
+
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
     ],
     'params' => $params,
+    'name' => 'FreeTube',
 ];

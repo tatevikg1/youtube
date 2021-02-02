@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Video;
-// use GuzzleHttp\Psr7\UploadedFile;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -48,7 +47,7 @@ class VideoController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Video::find(),
+            'query'   => Video::find()->whereCreator(Yii::$app->user->id)->latest(),
         ]);
 
         return $this->render('index', [

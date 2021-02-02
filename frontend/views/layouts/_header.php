@@ -9,11 +9,11 @@ use yii\bootstrap4\NavBar;
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
     ]);
-    $menuItems = [
-        ['label' => 'Create', 'url' => ['/video/create']],
-    ];
+    
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+        $menuItems[] = ['label' => 'SignUp', 'url' => ['/site/signup']];
+
     } else {
         $menuItems[] = [
             
