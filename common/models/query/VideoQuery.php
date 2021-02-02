@@ -2,6 +2,8 @@
 
 namespace common\models\query;
 
+use common\models\Video;
+
 /**
  * This is the ActiveQuery class for [[\common\models\Video]].
  *
@@ -35,6 +37,11 @@ class VideoQuery extends \yii\db\ActiveQuery
     public function whereCreator($userId)
     {
         return $this->andWhere(['created_by' => $userId]);
+    }
+
+    public function published()
+    {
+        return $this->andWhere(['status' => Video::STATUS_PUBLISHED]);
     }
 
     public function latest()
