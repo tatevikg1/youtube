@@ -136,7 +136,7 @@ class Video extends \yii\db\ActiveRecord
             }
             $this->video->saveAs($videoPath);
         }
-        var_dump($videoPath);
+        echo get_current_user();
         die;
 
         return true;

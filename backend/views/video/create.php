@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'options' => ['enctype' => 'multipart/form-data']
         ]) ?>
 
-        <button class="btn btn-primary btn-file">
+        <div class="btn btn-primary btn-file" id="selectVideoFile">
             Select file
             <input type="file" id="videoFile" name="video">
-        </button>
-
+        </div>
+        
         <?php \yii\bootstrap4\ActiveForm::end() ?>
     </div>
 
