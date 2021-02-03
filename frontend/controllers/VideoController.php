@@ -66,8 +66,12 @@ class VideoController extends Controller
 
         $videoViews = new VideoView();
         $videoViews->updateViews($id, \Yii::$app->user->id);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find()->published()->latest(),
+        ]);
     
-        return $this->render('view', [ 'model' => $video ]);
+        return $this->render('view', [ 'model' => $video , 'dataProvider' => $dataProvider]);
     }
 
     public function actionLike($id)

@@ -1,6 +1,8 @@
 <?php /**
  * @var $model \common\models\Video
 */
+
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -20,7 +22,7 @@ use yii\widgets\Pjax;
 
         <div class="mt-2">
             <div style="font-weight: bold;">
-                <?= $model->title ?>
+                <?= Html::encode($model->title)  ?>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -31,6 +33,26 @@ use yii\widgets\Pjax;
                     <?php Pjax::begin() ?>
                         <?= $this->render('_buttons', ['model' => $model])?>
                     <?php Pjax::end() ?>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-1">
+                <i class="fas fa-user-circle fa-3x"></i>
+            </div>
+            <div class="col-11">
+                <div class="justify-content-between row container">
+                    <div class="" style="line-height: 0.9;">
+                        <div class="font-weight-bold"><?= $model->createdBy->username ?></div>
+                        <small class="text-muted">12 subscribers</small>
+                    </div>
+                    <div class="">
+                        <img src="/storage/subscribe.jpeg" alt="Subscribe" width="120px">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <?= Html::encode($model->description)  ?>
                 </div>
             </div>
         </div>

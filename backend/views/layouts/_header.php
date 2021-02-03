@@ -6,7 +6,7 @@ use yii\bootstrap4\NavBar;
 
 
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => '<i class="fab fa-youtube fa-lg" style="color:red;"></i>'. Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
     ]);
     $menuItems = [

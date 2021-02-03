@@ -49,5 +49,5 @@ return [
         ],
     ],
     'params' => $params,
-    'name' => 'FreeTube',
+    'name' => 'YouTube',
 ];
