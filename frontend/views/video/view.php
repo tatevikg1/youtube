@@ -5,6 +5,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+use yii\widgets\ListView;
 
 ?>
 
@@ -47,7 +48,7 @@ use yii\widgets\Pjax;
                         <div class="font-weight-bold"><?= $model->createdBy->username ?></div>
                         <small class="text-muted">12 subscribers</small>
                     </div>
-                    <div class="">
+                    <div class="subscribe-btn">
                         <img src="/storage/subscribe.jpeg" alt="Subscribe" width="120px">
                     </div>
                 </div>
@@ -60,5 +61,14 @@ use yii\widgets\Pjax;
     </div>
 
     <div class="col-sm-4">
+
+    <?php echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemView'  => '_side_video',
+        'layout' => '<div class="d-flex flex-wrap">{items}</div>{pager}',
+        'itemOptions' => [
+            'tag' => false,
+        ]
+    ]) ?>
     </div>
 </div>
