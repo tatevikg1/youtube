@@ -50,3 +50,8 @@ aside .nav-pills .nav-link.active{
     height: 100%;
     opacity: 0;
 }
+
+.frontend-content{
+    margin-bottom: 200px;
+    padding-bottom: 200px;
+}

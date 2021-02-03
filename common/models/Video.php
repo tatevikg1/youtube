@@ -48,8 +48,6 @@ class Video extends \yii\db\ActiveRecord
         return '{{%video}}';
     }
 
-    /**
-    */ 
     public function behaviors()
     {
         return [
@@ -196,5 +194,11 @@ class Video extends \yii\db\ActiveRecord
         if(file_exists($thumbnailPath)){
             unlink($thumbnailPath);
         }
+    }
+
+    /*@return \yii\db\ActiveQuery*/
+    public function getViews()
+    {
+        return $this->hasMany(VideoView::class, ['video_id' => 'video_id']);
     }
 }
