@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use Imagine\Image\Box;
+use \common\models\VideoLike;
 
 /**
  * This is the model class for table "{{%video}}".
@@ -201,4 +202,27 @@ class Video extends \yii\db\ActiveRecord
     {
         return $this->hasMany(VideoView::class, ['video_id' => 'video_id']);
     }
+
+    public function isLikedBy($user_id)
+    {
+        return VideoLike::find()->userReacted($user_id, $this->video_id)->liked()->one();
+    }
+
+    public function isDisikedBy($user_id)
+    {
+        return VideoLike::find()->userReacted($user_id, $this->video_id)->disliked()->one();
+    }
+
+    /*@return \yii\db\ActiveQuery*/
+    public function getLikes()
+    {
+        return $this->hasMany(VideoLike::class, ['video_id' => 'video_id'])->liked();
+    }
+
+    /*@return \yii\db\ActiveQuery*/
+    public function getDislikes()
+    {
+        return $this->hasMany(VideoLike::class, ['video_id' => 'video_id'])->disliked();
+    }
+
 }

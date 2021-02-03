@@ -1,13 +1,11 @@
 <?php
 namespace frontend\controllers;
 
-// use Yii;
-// use yii\base\InvalidArgumentException;
-// use yii\web\BadRequestHttpException;
 
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use common\models\Video;
+use common\models\VideoLike;
 use common\models\VideoView;
 use Yii;
 use yii\filters\VerbFilter;
@@ -19,6 +17,28 @@ use yii\web\NotFoundHttpException;
  */
 class VideoController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only'  => ['like', 'dislike'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verb'  => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'like' => ['post'],
+                    'dislike' => ['post'],
+                ]
+            ]
+        ];
+    }
     /**
      * Displays videos.
      *
@@ -42,16 +62,73 @@ class VideoController extends Controller
     public function actionView($id)
     {
         $this->layout = 'front';
-        $video =  Video::findOne($id);//->published()->andWhere('video_id', $id);
+        $video = $this->findVideo($id);
 
-        if(!$video){
-            throw new NotFoundHttpException('Video does not exists!');
+        $videoViews = new VideoView();
+        $videoViews->updateViews($id, \Yii::$app->user->id);
+    
+        return $this->render('view', [ 'model' => $video ]);
+    }
+
+    public function actionLike($id)
+    {
+        $video = $this->findVideo($id);
+        $user_id = Yii::$app->user->id;
+
+        $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
+
+        if(!$videoReaction){
+            $videoReaction = new VideoLike();
+            $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
+
+        }else if($videoReaction->type == VideoLike::TYPE_LIKE){
+            $videoReaction->delete();
         }else{
-            $videoViews = new VideoView();
-            $videoViews->updateViews($id, \Yii::$app->user->id);
+            $videoReaction->delete();
+            $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
         }
 
-        return $this->render('view', [ 'model' => $video ]);
+        return $this->renderAjax('_buttons', ['model' => $video]);
+    }
+
+    public function actionDislike($id)
+    {
+        $video = $this->findVideo($id);
+        $user_id = Yii::$app->user->id;
+
+        $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
+
+        if(!$videoReaction){
+            $videoReaction = new VideoLike();
+            $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
+
+        }else if($videoReaction->type == VideoLike::TYPE_DISLIKE){
+            $videoReaction->delete();
+        }else{
+            $videoReaction->delete();
+            $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
+        }
+
+        return $this->renderAjax('_buttons', ['model' => $video]);
+    }
+
+    protected function findVideo($id)
+    {
+        $video = Video::findOne($id);
+        if(!$video){
+            throw new NotFoundHttpException('Video does not exists!');
+        }
+        return $video;
+    }
+
+    protected function saveReaction($video_id, $user_id, $type)
+    {
+        $videoReaction = new VideoLike();
+        $videoReaction->video_id = $video_id;
+        $videoReaction->user_id = $user_id;
+        $videoReaction->type = $type;
+        $videoReaction->created_at = time();
+        $videoReaction->save();
     }
 
 
