@@ -92,7 +92,7 @@ class VideoController extends Controller
             $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
         }
 
-        return $this->renderAjax('_buttons', ['model' => $video]);
+        return $this->renderAjax('/partial/_reaction_buttons', ['model' => $video]);
     }
 
     public function actionDislike($id)
@@ -113,7 +113,7 @@ class VideoController extends Controller
             $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
         }
 
-        return $this->renderAjax('_buttons', ['model' => $video]);
+        return $this->renderAjax('/partial/_reaction_buttons', ['model' => $video]);
     }
 
     protected function findVideo($id)

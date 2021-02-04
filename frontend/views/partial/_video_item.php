@@ -2,7 +2,9 @@
 /*@var $model \common\models\Video
 */
 use \yii\helpers\Url;
+use \yii\helpers\Html;
 ?>
+
 <div class="card m-3" style="width: 14rem;">
     <div class="embed-responsive embed-responsive-16by9">
         <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>">
@@ -19,7 +21,9 @@ use \yii\helpers\Url;
             <?= $model->title ?>
         </h6>
         <p class="text-muted card-text m-0"> 
-            <?= $model->createdBy->username ?>
+            <?= Html::a($model->createdBy->username, 
+                ['channel/view', 'username' =>  $model->createdBy->username],
+                ["class" => "channelname text-muted card-text m-0"])?>
         </p>
         <p class="text-muted card-text m-0"> 
             <?= $model->getViews()->count() ?> views • <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>

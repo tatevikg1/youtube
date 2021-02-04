@@ -32,7 +32,7 @@ use yii\widgets\ListView;
                 </div>
                 <div>
                     <?php Pjax::begin() ?>
-                        <?= $this->render('_buttons', ['model' => $model])?>
+                        <?= $this->render('/partial/_reaction_buttons', ['model' => $model])?>
                     <?php Pjax::end() ?>
                 </div>
             </div>
@@ -45,11 +45,17 @@ use yii\widgets\ListView;
             <div class="col-11">
                 <div class="justify-content-between row container">
                     <div class="" style="line-height: 0.9;">
-                        <div class="font-weight-bold"><?= $model->createdBy->username ?></div>
-                        <small class="text-muted">12 subscribers</small>
+                        <div class="font-weight-bold ">
+                            <?= Html::a($model->createdBy->username, 
+                                ['channel/view', 'username' =>  $model->createdBy->username],
+                                ["class" => "channelname"])?>
+                        </div>
+                        <small class="text-muted"><?= $model->createdBy->getSubscribers()->count() ?> subscribers</small>
                     </div>
                     <div class="subscribe-btn">
-                        <img src="/storage/subscribe.jpeg" alt="Subscribe" width="120px">
+                        <?php Pjax::begin() ?>
+                            <?= $this->render('/partial/_subscribe_button', ['model' => $model->createdBy])?>
+                        <?php Pjax::end() ?>
                     </div>
                 </div>
                 <div class="mt-3">
@@ -64,7 +70,7 @@ use yii\widgets\ListView;
 
     <?php echo ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemView'  => '_side_video',
+        'itemView'  => '/partial/_side_video',
         'layout' => '<div class="d-flex flex-wrap">{items}</div>{pager}',
         'itemOptions' => [
             'tag' => false,

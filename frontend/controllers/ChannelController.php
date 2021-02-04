@@ -1,0 +1,81 @@
+<?php
+
+namespace frontend\controllers;
+
+use common\models\Subscriber;
+use common\models\User;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
+use common\models\Video;
+
+/** 
+* class ChannelController
+* @package frontend/controllers
+*/
+class ChannelController extends Controller
+{
+
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only'  => ['subscribe'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+
+    public function actionView($username)
+    {
+        $channel = $this->findChannel($username);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find()->andWhere(['created_by'=> $channel->id])->published(),
+        ]);
+
+        return $this->render('view', ['model' => $channel, 'dataProvider' => $dataProvider]);
+    }
+
+    public function actionSubscribe($username)
+    {
+        $channel = $this->findChannel($username);
+        $user_id = \Yii::$app->user->id;
+
+        $subscriber = $channel->isSubscribedBy($user_id);
+
+        if(!$subscriber){
+            $subscriber = new Subscriber();
+            $subscriber->user_id = $user_id;
+            $subscriber->channel_id = $channel->id;
+            $subscriber->created_at = time();
+            $subscriber->save();
+        }else{
+            $subscriber->delete();
+        }
+        
+        return $this->renderAjax('/partial/_subscribe_button', ['model' => $channel]);
+    }
+
+
+    /**
+     * @param $username
+     * @throws yii\web\NotFoundHttpException
+    */
+    protected function findChannel($username)
+    {
+        $channel =  User::findByUsername($username);
+        if(!$channel){
+            throw new NotFoundHttpException();
+        }
+        return $channel;
+    }
+}

@@ -3,7 +3,9 @@
 */
 use \yii\helpers\Url;
 ?>
-<div class="row align-items-center" style="width: 400px">
+<div class="row align-items-center" style="width: 400px" 
+    onmouseover="this.style.background='#dddddd';" 
+    onmouseout="this.style.background='white';">
 
     <div class="col-5">
         <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>">
@@ -17,7 +19,7 @@ use \yii\helpers\Url;
     </div>
 
     <div class="col-7">
-        <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>">
+        <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>" class="link-without-effects">
 
             <div class="card-body p-2">
                 <h6 class="card-title m-0 p-0" style="font-weight:bold">
@@ -32,5 +34,5 @@ use \yii\helpers\Url;
             </div>
         </a>
 
-    </div>    
+    </div>     
 </div>
