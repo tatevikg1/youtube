@@ -1,12 +1,12 @@
 
 
-$( document ).ready(function() {
+jQuery( document ).ready(function() {
     'use strict';
 
-    $(function () {
+    jQuery(function () {
         
-        $('#videoFile').change(ev => {      
-            $(ev.target).closest('form').trigger('submit');
+        jQuery('#videoFile').change(ev => {      
+            jQuery(ev.target).closest('form').trigger('submit');
         })
     });
 });

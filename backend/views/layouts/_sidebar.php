@@ -12,7 +12,8 @@
             ['label' => 'Dashboard',    'url' => ['/site/index']],
             ['label' => 'Videos',       'url' => ['/video/index']],
             ['label' => 'Playlists',    'url' => ['/playlist/index']],
-            ['label' => 'Comments',     'url' => ['/comment/index']]
+            ['label' => 'Comments',     'url' => ['/comment/index']],
+            ['label' => 'Profile',      'url' => ['/profile/update']],
         ]
     ])?>
 
