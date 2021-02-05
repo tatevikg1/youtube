@@ -15,8 +15,8 @@ use yii\helpers\Url;
 
 <div class="search-box">
     <div class="search-container">
-        <form action="<?= Url::to('video/search') ?>">
-            <input type="text" placeholder="Search.." name="searchInput">
+        <form action="<?= Url::to('/video/search') ?>">
+            <input type="text" placeholder="Search..." name="keyword" value="<?= Yii::$app->request->get('keyword') ?>">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
     </div>

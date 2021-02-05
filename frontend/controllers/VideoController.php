@@ -74,6 +74,22 @@ class VideoController extends Controller
         return $this->render('view', [ 'model' => $video , 'dataProvider' => $dataProvider]);
     }
 
+    public function actionSearch($keyword)
+    {
+        $query = Video::find()->published()->latest();
+
+        if($keyword){
+           $query->byKeyword($keyword)
+           ->orderBy("MATCH (title, description, tags) AGAINST ($keyword) DESC");
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('search', ['dataProvider' => $dataProvider]);
+    }
+
     public function actionLike($id)
     {
         $video = $this->findVideo($id);
