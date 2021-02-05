@@ -7,13 +7,16 @@
 
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use yii\helpers\Html;
 
 ?>
 
 <div class="jumbotron p-4">
     <div class="row">
         <div class="col-1">
-            <i class="fas fa-user-circle fa-5x"></i>
+            <?= $model->profile->has_avatar 
+                    ?  Html::img($model->profile->getAvatarLink(),['class' => 'avatar big-avatar'])
+                    : ' <i class="fas fa-user-circle fa-5x"></i>' ?>
         </div>
         <div class="col-11">
             <div class="justify-content-between row container">

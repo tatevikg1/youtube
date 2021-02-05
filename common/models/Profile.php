@@ -103,4 +103,11 @@ class Profile extends \yii\db\ActiveRecord
         return true;
     }
 
+    public function getAvatarLink()
+    {
+        return $this->has_avatar 
+            ? Yii::$app->params['frontendUrl'] . 'storage/avatars/' . $this->id . '.jpg' 
+            : '';
+    }
+
 }

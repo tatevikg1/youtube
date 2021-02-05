@@ -166,6 +166,7 @@ class Video extends \yii\db\ActiveRecord
             }
 
             $this->thumbnail[0]->saveAs($thumbnailPath);
+            Image::resize($thumbnailPath, 1600, 900)->save();
             Image::getImagine()->open($thumbnailPath)->thumbnail(new Box(1280, 1280))->save();
         }
 

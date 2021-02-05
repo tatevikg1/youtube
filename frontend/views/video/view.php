@@ -40,7 +40,10 @@ use yii\widgets\ListView;
         <hr>
         <div class="row">
             <div class="col-1">
-                <i class="fas fa-user-circle fa-3x"></i>
+                <?= $model->createdBy->profile->has_avatar 
+                    ?  Html::img($model->createdBy->profile->getAvatarLink(),['class' => 'avatar'])
+                    : ' <i class="fas fa-user-circle fa-3x"></i>' ?>
+               
             </div>
             <div class="col-11">
                 <div class="justify-content-between row container">
