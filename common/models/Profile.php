@@ -90,8 +90,8 @@ class Profile extends \yii\db\ActiveRecord
         }
 
         if($this->avatar){
-            $avatarPath = Yii::getAlias('@frontend/web/storage/thumbs/'. $this->video_id .'.jpg');
-            // if the video directory does not exists create it
+            $avatarPath = Yii::getAlias('@frontend/web/storage/avatars/'. $this->id .'.jpg');
+            // if the avatar directory does not exists create it
             if(!is_dir(dirname($avatarPath))){
                 FileHelper::createDirectory(dirname($avatarPath));
             }

@@ -34,7 +34,7 @@ class ProfileController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'update' => ['GET','POST'],
                 ],
             ],
         ];
@@ -52,21 +52,16 @@ class ProfileController extends Controller
         $user =  User::find()->where(['id'=> Yii::$app->user->id])->one();
         $id = $user->profile->id;
 
+        // find the profile of user
         $model = $this->findModel($id);
-        
-        $model->avatar = UploadedFile::getInstancesByName('avatar');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model['avatar'] = UploadedFile::getInstancesByName('avatar');
+        // load() with second argument set to '' to  state that  POST fields are not including model name
+        if($model->load(Yii::$app->request->post(), '') && $model->save()){
             return $this->redirect(['/']);
-        }else {
-            echo "<pre>";
-            print_r($model->getErrors());
-            echo"</pre>";
-            // exit;
-         }
-
-
-        return $this->render('update', [ 'model' => $model, 'user' => $user]);
+        }
+        
+        return $this->render('update', ['user' => $user]);   
     }
 
     /**
