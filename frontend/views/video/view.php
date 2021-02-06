@@ -71,13 +71,12 @@ use yii\widgets\ListView;
 
     <div class="col-sm-4">
 
-    <?php echo ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemView'  => '/partial/_side_video',
-        'layout' => '<div class="d-flex flex-wrap">{items}</div>{pager}',
-        'itemOptions' => [
-            'tag' => false,
-        ]
-    ]) ?>
+
+    <?php foreach ($similarVideos  as $model)
+
+       echo $this->render('/partial/_side_video', ['model' => $model]);
+
+    ?>
+
     </div>
 </div>

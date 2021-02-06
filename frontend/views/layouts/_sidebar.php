@@ -10,7 +10,7 @@
         ],
         'items' => [
             ['label' => 'Home',         'url' => ['/video/index']],
-            ['label' => 'History',      'url' => ['/history']],
+            ['label' => 'History',      'url' => ['/video/history']],
             ['label' => 'Playlists',    'url' => ['/playlist/index']],
             ['label' => 'Comments',     'url' => ['/comment/index']]
         ]

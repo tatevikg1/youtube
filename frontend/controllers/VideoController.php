@@ -67,11 +67,29 @@ class VideoController extends Controller
         $videoViews = new VideoView();
         $videoViews->updateViews($id, \Yii::$app->user->id);
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => Video::find()->published()->latest(),
-        ]);
+        $similarVideos = Video::find()
+            ->published()
+            ->andWhere(['NOT', ['video_id' => $id]])
+            ->byKeyword($video->title)
+            ->limit(10)->all();
     
-        return $this->render('view', [ 'model' => $video , 'dataProvider' => $dataProvider]);
+        return $this->render('view', [ 'model' => $video , 'similarVideos' => $similarVideos]);
+    }
+
+    public function actionHistory()
+    {
+        $query = Video::find()
+            ->innerJoin("(SELECT video_id FROM  video_view WHERE user_id = :user_id) AS vv", 
+                "vv.video_id = video.video_id", ['user_id' => \Yii::$app->user->id])
+            ->orderBy('updated_at DESC');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        return $this->render('history', [
+            'dataProvider' => $dataProvider
+        ]);
     }
 
     public function actionSearch($keyword)
@@ -79,8 +97,7 @@ class VideoController extends Controller
         $query = Video::find()->published()->latest();
 
         if($keyword){
-           $query->byKeyword($keyword)
-           ->orderBy("MATCH (title, description, tags) AGAINST ($keyword) DESC");
+           $query->byKeyword($keyword);
         }
 
         $dataProvider = new ActiveDataProvider([

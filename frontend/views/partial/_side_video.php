@@ -3,14 +3,14 @@
 */
 use \yii\helpers\Url;
 ?>
-<div class="row align-items-center" style="width: 400px" 
+<div class="row align-items-center mb-1" style="width: 400px" 
     onmouseover="this.style.background='#dddddd';" 
     onmouseout="this.style.background='white';">
 
     <div class="col-5">
         <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>">
             <div class="embed-responsive embed-responsive-16by9">
-                <video class="embed-responsive-item" 
+                <video class="p-1" 
                     src="<?= $model->getVideoLink() ?>" 
                     poster="<?= $model->getThumbnailLink() ?>" >
                 </video>
@@ -19,20 +19,16 @@ use \yii\helpers\Url;
     </div>
 
     <div class="col-7">
-        <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>" class="link-without-effects">
-
-            <div class="card-body p-2">
-                <h6 class="card-title m-0 p-0" style="font-weight:bold">
-                    <?= $model->title ?>
-                </h6>
-                <p class="text-muted card-text m-0"> 
-                    <?= $model->createdBy->username ?>
-                </p>
-                <p class="text-muted card-text"> 
-                    <?= $model->getViews()->count() ?> views • <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
-                </p>
-            </div>
-        </a>
-
+        <div class="p-2">
+            <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>" class="link-without-effects">
+                <h6 class="font-weight-bold h6">  <?= $model->title ?> </h6>
+            </a>
+            <!-- <a href="<?php echo Url::to(['/channel/view', 'username' => $model->created_by]) ?>" class="link-without-effects"> -->
+                <p class="text-muted h6"> <?= $model->createdBy->username ?>  </p>
+            <!-- </a> -->
+            <p class="text-muted m-0 h6"> 
+                <?= $model->getViews()->count() ?> views • <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
+            </p>
+        </div>
     </div>     
 </div>
