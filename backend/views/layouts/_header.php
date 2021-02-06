@@ -9,8 +9,9 @@ use yii\bootstrap4\NavBar;
         'brandLabel' => '<i class="fab fa-youtube fa-lg" style="color:red;"></i>'. Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
     ]);
-    $menuItems = [
-        ['label' => 'Create', 'url' => ['/video/create'],]
+
+    $menuItems = [  
+        ['label' => '<i class="fas fa-video"></i> Create', 'url' => ['/video/create'],]
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

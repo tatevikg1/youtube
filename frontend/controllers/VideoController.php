@@ -22,7 +22,7 @@ class VideoController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only'  => ['like', 'dislike'],
+                'only'  => ['like', 'dislike', 'history'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -47,7 +47,7 @@ class VideoController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Video::find()->published()->latest(),
+            'query' => Video::find()->with('createdBy')->published()->latest(),
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider
@@ -68,6 +68,7 @@ class VideoController extends Controller
         $videoViews->updateViews($id, \Yii::$app->user->id);
 
         $similarVideos = Video::find()
+            ->with('createdBy')
             ->published()
             ->andWhere(['NOT', ['video_id' => $id]])
             ->byKeyword($video->title)
@@ -76,25 +77,9 @@ class VideoController extends Controller
         return $this->render('view', [ 'model' => $video , 'similarVideos' => $similarVideos]);
     }
 
-    public function actionHistory()
-    {
-        $query = Video::find()
-            ->innerJoin("(SELECT video_id FROM  video_view WHERE user_id = :user_id) AS vv", 
-                "vv.video_id = video.video_id", ['user_id' => \Yii::$app->user->id])
-            ->orderBy('updated_at DESC');
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        return $this->render('history', [
-            'dataProvider' => $dataProvider
-        ]);
-    }
-
     public function actionSearch($keyword)
     {
-        $query = Video::find()->published()->latest();
+        $query = Video::find()->with('createdBy')->published()->latest();
 
         if($keyword){
            $query->byKeyword($keyword);

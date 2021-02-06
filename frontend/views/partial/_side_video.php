@@ -23,9 +23,9 @@ use \yii\helpers\Url;
             <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>" class="link-without-effects">
                 <h6 class="font-weight-bold h6">  <?= $model->title ?> </h6>
             </a>
-            <!-- <a href="<?php echo Url::to(['/channel/view', 'username' => $model->created_by]) ?>" class="link-without-effects"> -->
+            <a href="<?php echo Url::to(['/channel/view', 'username' => $model->createdBy->username]) ?>" class="link-without-effects">
                 <p class="text-muted h6"> <?= $model->createdBy->username ?>  </p>
-            <!-- </a> -->
+            </a>
             <p class="text-muted m-0 h6"> 
                 <?= $model->getViews()->count() ?> views • <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
             </p>
