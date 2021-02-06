@@ -3,9 +3,16 @@
 */
 use \yii\helpers\Url;
 use \yii\helpers\Html;
+use yii\widgets\Pjax;
+
 ?>
 
 <div class="card m-3" style="width: 14rem;">
+
+    <?php Pjax::begin() ?>
+        <?= $this->render('/partial/button/_watch_later_button', ['model' => $model])?>
+    <?php Pjax::end() ?>
+
     <div class="embed-responsive embed-responsive-16by9">
         <a href="<?php echo Url::to(['/video/view', 'id' => $model->video_id]) ?>">
             <video class="embed-responsive-item" 

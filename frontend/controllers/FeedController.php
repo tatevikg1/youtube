@@ -98,34 +98,13 @@ class FeedController extends Controller
         ]);
     }
 
-    public function actionLibrary()
-    {
-        $liked = Video::find()
-            ->alias('v')
-            ->innerJoin("(SELECT video_id FROM  video_like WHERE user_id = :user_id AND type = 1) AS vl", 
-                "vl.video_id = v.video_id", ['user_id' => \Yii::$app->user->id])
-            ->latest();
-
-        $history = Video::find()
-            ->innerJoin("(SELECT video_id FROM  video_view WHERE user_id = :user_id) AS vv", 
-                "vv.video_id = video.video_id", ['user_id' => \Yii::$app->user->id]);
-
-
-        $likedProvider = new ActiveDataProvider(['query' => $liked,]);
-        $historyProvider = new ActiveDataProvider(['query' => $history,]);
-
-        return $this->render('library', [
-            'likedProvider' => $likedProvider,
-            'historyProvider' => $historyProvider
-        ]);
-    }
-
     public function actionLater()
     {
         $query = Video::find()
             ->alias('v')
-            ->innerJoin("(SELECT video_id FROM  video_like WHERE user_id = :user_id AND type = 1) AS vl", 
-                "vl.video_id = v.video_id", ['user_id' => \Yii::$app->user->id])
+            ->innerJoin("(SELECT video_id FROM  watch_later WHERE user_id = :user_id) AS wl", 
+                "wl.video_id = v.video_id", ['user_id' => \Yii::$app->user->id])
+            ->limit(10)
             ->latest();
 
         $dataProvider = new ActiveDataProvider([
@@ -133,8 +112,40 @@ class FeedController extends Controller
         ]);
 
         return $this->render('filter', [
-            'fileterName' => 'Watch later',
+            'filterName' => 'Watch later',
             'dataProvider' => $dataProvider
+        ]);
+    }
+
+    public function actionLibrary()
+    {
+        $liked = Video::find()
+            ->alias('v')
+            ->innerJoin("(SELECT video_id FROM  video_like WHERE user_id = :user_id AND type = 1) AS vl", 
+                "vl.video_id = v.video_id", ['user_id' => \Yii::$app->user->id])
+            ->limit(6)
+            ->latest();
+
+        $history = Video::find()
+            ->innerJoin("(SELECT video_id FROM  video_view WHERE user_id = :user_id) AS vv", 
+                "vv.video_id = video.video_id", ['user_id' => \Yii::$app->user->id])
+            ->limit(6);
+
+        $watch_later = Video::find()
+            ->alias('v')
+            ->innerJoin("(SELECT video_id FROM  watch_later WHERE user_id = :user_id) AS wl", 
+                "wl.video_id = v.video_id", ['user_id' => \Yii::$app->user->id])
+            ->limit(6)
+            ->latest();
+
+        $watchLaterProvider = new ActiveDataProvider([ 'query' => $watch_later, ]);
+        $likedProvider = new ActiveDataProvider(['query' => $liked,]);
+        $historyProvider = new ActiveDataProvider(['query' => $history,]);
+
+        return $this->render('library', [
+            'likedProvider' => $likedProvider,
+            'historyProvider' => $historyProvider,
+            'watchLaterProvider' => $watchLaterProvider,
         ]);
     }
 

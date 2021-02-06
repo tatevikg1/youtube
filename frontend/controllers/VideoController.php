@@ -7,6 +7,7 @@ use yii\web\Controller;
 use common\models\Video;
 use common\models\VideoLike;
 use common\models\VideoView;
+use common\models\WatchLater;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -35,6 +36,7 @@ class VideoController extends Controller
                 'actions' => [
                     'like' => ['post'],
                     'dislike' => ['post'],
+                    'later' =>['post'],
                 ]
             ]
         ];
@@ -110,7 +112,7 @@ class VideoController extends Controller
             $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
         }
 
-        return $this->renderAjax('/partial/_reaction_buttons', ['model' => $video]);
+        return $this->renderAjax('/partial/button/_reaction_buttons', ['model' => $video]);
     }
 
     public function actionDislike($id)
@@ -131,7 +133,26 @@ class VideoController extends Controller
             $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
         }
 
-        return $this->renderAjax('/partial/_reaction_buttons', ['model' => $video]);
+        return $this->renderAjax('/partial/button/_reaction_buttons', ['model' => $video]);
+    }
+
+    public function actionLater($video_id)
+    {
+        $video = $this->findVideo($video_id);
+        $user_id = Yii::$app->user->id;
+
+        $watchLater = WatchLater::find()
+            ->andWhere(['user_id'=> $user_id, 'video_id' => $video_id])
+            ->one();
+
+        if(!$watchLater){
+            $watchLater = new WatchLater();
+            $watchLater->user_id = $user_id;
+            $watchLater->video_id = $video_id;
+            $watchLater->created_at = time();
+            $watchLater->save(false);
+        }        
+        return $this->renderAjax('/partial/button/_watch_later_button', ['model' => $video]);
     }
 
     protected function findVideo($id)
@@ -152,6 +173,5 @@ class VideoController extends Controller
         $videoReaction->created_at = time();
         $videoReaction->save();
     }
-
 
 }

@@ -26,7 +26,7 @@ use yii\helpers\Html;
                 </div>
                 <div class="subscribe-btn">
                     <?php Pjax::begin() ?>
-                        <?= $this->render('/partial/_subscribe_button', ['model' => $model])?>
+                        <?= $this->render('/partial/button/_subscribe_button', ['model' => $model])?>
                     <?php Pjax::end() ?>
                 </div>
             </div>

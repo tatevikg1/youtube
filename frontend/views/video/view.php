@@ -10,13 +10,16 @@ use yii\widgets\Pjax;
 
 <div class="row frontend-content">
     <div class="col-sm-8">
+
         <div class="embed-responsive embed-responsive-16by9 mr-2">
+
             <a href="<?php echo Url::to(['/video/update', 'id' => $model->video_id]) ?>">
                 <video class="embed-responsive-item" 
                     src="<?= $model->getVideoLink() ?>" 
                     poster="<?= $model->getThumbnailLink() ?>" 
                     controls>
                 </video>
+                
             </a>
         </div>
 
@@ -31,7 +34,7 @@ use yii\widgets\Pjax;
                 </div>
                 <div>
                     <?php Pjax::begin() ?>
-                        <?= $this->render('/partial/_reaction_buttons', ['model' => $model])?>
+                        <?= $this->render('/partial/button/_reaction_buttons', ['model' => $model])?>
                     <?php Pjax::end() ?>
                 </div>
             </div>
@@ -56,7 +59,7 @@ use yii\widgets\Pjax;
                     </div>
                     <div class="subscribe-btn">
                         <?php Pjax::begin() ?>
-                            <?= $this->render('/partial/_subscribe_button', ['model' => $model->createdBy])?>
+                            <?= $this->render('/partial/button/_subscribe_button', ['model' => $model->createdBy])?>
                         <?php Pjax::end() ?>
                     </div>
                 </div>
