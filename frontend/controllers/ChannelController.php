@@ -9,6 +9,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use common\models\Video;
+use yii\filters\VerbFilter;
 
 /** 
 * class ChannelController
@@ -30,6 +31,12 @@ class ChannelController extends Controller
                     ],
                 ],
             ],
+            'verb'  => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'subscribe' => ['post'],
+                ]
+            ]
         ];
     }
 
@@ -76,9 +83,8 @@ class ChannelController extends Controller
             $subscriber->delete();
         }
         
-        return $this->renderAjax('/partial/_subscribe_button', ['model' => $channel]);
+        return $this->renderAjax('/partial/button/_subscribe_button', ['model' => $channel]);
     }
-
 
     /**
      * @param $username

@@ -1,7 +1,7 @@
 <?php
 namespace frontend\controllers;
 
-
+use common\models\Comment;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use common\models\Video;
@@ -75,8 +75,17 @@ class VideoController extends Controller
             ->andWhere(['NOT', ['video_id' => $id]])
             ->byKeyword($video->title)
             ->limit(10)->all();
+        
+        // $comments = Comment::find()
+        //     ->with('likes', 'dislikes')
+        //     ->andWhere(['video_id' => $id])
+        //     ->limit(10)->all();
     
-        return $this->render('view', [ 'model' => $video , 'similarVideos' => $similarVideos]);
+        return $this->render('view', [ 
+            'model' => $video , 
+            'similarVideos' => $similarVideos,
+            // 'comments' => $comments,
+        ]);
     }
 
     public function actionSearch($keyword)
@@ -158,6 +167,7 @@ class VideoController extends Controller
     protected function findVideo($id)
     {
         $video = Video::findOne($id);
+
         if(!$video){
             throw new NotFoundHttpException('Video does not exists!');
         }

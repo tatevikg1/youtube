@@ -226,13 +226,20 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('subscriber', ['channel_id' => 'id']);
     }
 
-  /**
+    /**
      * Gets query for [[Profile]].
      *
      * @return \yii\db\ActiveQuery|\common\models\query\ProfileQuery
-     */
+     * */
+
     public function getProfile()
     {
         return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, ['user_id' => 'id']);
+
     }
 }

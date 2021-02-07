@@ -40,6 +40,7 @@ use yii\widgets\Pjax;
             </div>
         </div>
         <hr>
+
         <div class="row">
             <div class="col-1">
                 <?= $model->createdBy->profile->has_avatar 
@@ -69,16 +70,33 @@ use yii\widgets\Pjax;
             </div>
         </div>
         <hr>
+
+        <div>
+            <div class="mt-2 mb-3 h5 font-weight-bold"><?= $model->getComments()->count() ?> comments</div>
+
+            <?php if(!Yii::$app->user->isGuest): ?>
+                <div class="row">
+                    <div class="col-1"> 
+                        <?= Yii::$app->user->identity->profile->has_avatar 
+                            ?  Html::img(Yii::$app->user->identity->profile->getAvatarLink(),['class' => 'avatar'])
+                            : ' <i class="fas fa-user-circle fa-3x"></i>'
+                        ?>
+                    </div>
+                    <div class="col-11">
+                        <?= $this->render('/partial/_comment_composer', ['video_id' => $model->video_id ]) ?>
+                    </div>
+                </div>
+            <?php endif ?>
+            
+            <?php foreach (array_reverse($model->comments ) as $comment)
+                echo $this->render('/partial/_comment', ['comment' => $comment]);
+            ?>
+        </div>
     </div>
 
     <div class="col-sm-4">
-
-
-    <?php foreach ($similarVideos  as $model)
-
-       echo $this->render('/partial/_side_video', ['model' => $model]);
-
-    ?>
-
+        <?php foreach ($similarVideos  as $model)
+            echo $this->render('/partial/_side_video', ['model' => $model]);
+        ?>
     </div>
 </div>

@@ -220,10 +220,21 @@ class Video extends \yii\db\ActiveRecord
         return $this->hasMany(VideoLike::class, ['video_id' => 'video_id'])->liked();
     }
 
+
     /*@return \yii\db\ActiveQuery*/
     public function getDislikes()
     {
         return $this->hasMany(VideoLike::class, ['video_id' => 'video_id'])->disliked();
+    }
+
+    /**
+     * Gets query for [[Comments]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\CommentQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, ['video_id' => 'video_id']);
     }
 
 }
