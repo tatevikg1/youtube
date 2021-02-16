@@ -75,16 +75,10 @@ class VideoController extends Controller
             ->andWhere(['NOT', ['video_id' => $id]])
             ->byKeyword($video->title)
             ->limit(10)->all();
-        
-        // $comments = Comment::find()
-        //     ->with('likes', 'dislikes')
-        //     ->andWhere(['video_id' => $id])
-        //     ->limit(10)->all();
     
         return $this->render('view', [ 
             'model' => $video , 
             'similarVideos' => $similarVideos,
-            // 'comments' => $comments,
         ]);
     }
 

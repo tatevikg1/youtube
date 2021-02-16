@@ -99,7 +99,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getVideo()
     {
-        return $this->hasOne(Video::className(), ['video_id' => 'video_id']);
+        return $this->hasOne(Video::class, ['video_id' => 'video_id']);
     }
 
     /**
@@ -127,10 +127,10 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->liked();
     }
 
-
     /*@return \yii\db\ActiveQuery*/
     public function getDislikes()
     {
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->disliked();
     }
+
 }

@@ -17,7 +17,7 @@ class CommentController extends \yii\web\Controller
 
             'access' => [
                 'class' => AccessControl::class,
-                'only'  => ['create'],
+                'only'  => ['create', 'index'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -31,9 +31,24 @@ class CommentController extends \yii\web\Controller
                     'create' => ['post'],
                     'like' => ['post'],
                     'dislike' => ['post'],
+                    // 'get_reply_field' => ['post'],
                 ]
             ]
         ];
+    }
+
+    public function actionIndex()
+    {
+        $comments = Comment::find()
+            ->with('video', 'parent')
+            ->andWhere(['created_by' => Yii::$app->user->id])
+            ->latest()->all();
+
+        if(!$comments){
+            throw new NotFoundHttpException('You haven\'t commented yet!');
+        }
+
+        return $this->render('/feed/comments', [ 'comments' => $comments, ]);
     }
 
     public function actionCreate()
@@ -45,10 +60,17 @@ class CommentController extends \yii\web\Controller
         $comment->video_id = $video_id;
         $comment->text = Yii::$app->request->post('text');
         $comment->created_at = time();
+        if(Yii::$app->request->post('comment_id')){
+            $comment->parent_id = Yii::$app->request->post('comment_id');
+            $comment->save();
+
+            return $this->renderAjax('/partial/comment/reply', [
+                'comment_id' => Yii::$app->request->post('comment_id'),
+            ]);
+        }
         $comment->save();
 
-
-        return $this->renderAjax('/partial/_comment_composer', [
+        return $this->renderAjax('/partial/comment/_composer', [
             'video_id' => $video_id,
         ]);
     }
@@ -95,7 +117,13 @@ class CommentController extends \yii\web\Controller
         return $this->renderAjax('/partial/button/_comment_reaction_buttons', ['model' => $comment]);
     }
 
-    public function findComment($id)
+    public function actionGet_reply_field($comment_id)
+    {
+        $comment = Comment::findOne(['id' => $comment_id]);
+        return $this->renderAjax('/partial/comment/_reply', ['comment' => $comment]);
+    }
+
+    protected function findComment($id)
     {
         $comment = Comment::findOne($id);
         if(!$comment){
@@ -113,4 +141,6 @@ class CommentController extends \yii\web\Controller
         $commentReaction->created_at = time();
         $commentReaction->save();
     }
+
+
 }

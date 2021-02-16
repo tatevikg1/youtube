@@ -83,13 +83,13 @@ use yii\widgets\Pjax;
                         ?>
                     </div>
                     <div class="col-11">
-                        <?= $this->render('/partial/_comment_composer', ['video_id' => $model->video_id ]) ?>
+                        <?= $this->render('/partial/comment/_composer', ['video_id' => $model->video_id ]) ?>
                     </div>
                 </div>
             <?php endif ?>
             
             <?php foreach (array_reverse($model->comments ) as $comment)
-                echo $this->render('/partial/_comment', ['comment' => $comment]);
+                echo $this->render('/partial/comment/_comment', ['comment' => $comment]);
             ?>
         </div>
     </div>

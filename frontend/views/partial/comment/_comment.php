@@ -23,7 +23,7 @@ use yii\widgets\Pjax;
         <div> <?= $comment->text ?></div>
         <div>
             <?php Pjax::begin() ?>
-                <?= $this->render('/partial/button/_comment_reaction_buttons', ['model' => $comment])?>
+                <?= $this->render('/partial/comment/_reaction_buttons', ['model' => $comment])?>
             <?php Pjax::end() ?>
         </div>
     </div>
