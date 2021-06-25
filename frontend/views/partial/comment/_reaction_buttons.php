@@ -2,6 +2,7 @@
 /** @var $model \common\models\Comment*/
 
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 ?>
 <div class="row">
@@ -23,6 +24,14 @@ use yii\helpers\Url;
         </i>
     </a>
 
-    <?= $this->render('/partial/comment/_reply_button', ['model' => $model])?>
+    <?php Pjax::begin() ?>
+        <a href="<?= Url::to(['/comment/get_reply_field', 'comment_id' => $model->id ])?>" 
+            class="btn btn-sm"
+            style="<?= $model->isDislikedBy(Yii::$app->user->id) ? 'color:blue' : 'color:grey'?>"
+            data-method="post"
+            data-pjax="1">
+            Reply
+        </a>
+    <?php Pjax::end() ?>
 </div>
 

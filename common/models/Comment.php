@@ -121,13 +121,17 @@ class Comment extends \yii\db\ActiveRecord
         return CommentLike::find()->userReacted($user_id, $this->id)->disliked()->one();
     }
 
-    /*@return \yii\db\ActiveQuery*/
+    /**
+     * @return \yii\db\ActiveQuery
+    */
     public function getLikes()
     {
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->liked();
     }
 
-    /*@return \yii\db\ActiveQuery*/
+    /**
+     * @return \yii\db\ActiveQuery
+    */
     public function getDislikes()
     {
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->disliked();
