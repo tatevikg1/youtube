@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use common\models\Comment;
@@ -36,7 +37,7 @@ class VideoController extends Controller
                 'actions' => [
                     'like' => ['post'],
                     'dislike' => ['post'],
-                    'later' =>['post'],
+                    'later' => ['post'],
                 ]
             ]
         ];
@@ -66,6 +67,12 @@ class VideoController extends Controller
         $this->layout = 'front';
         $video = $this->findVideo($id);
 
+        $comments =  Comment::find()
+            ->andWhere(['parent_id' => null])
+            ->andWhere(['video_id' => $video->video_id])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
+
         $videoViews = new VideoView();
         $videoViews->updateViews($id, \Yii::$app->user->id);
 
@@ -75,10 +82,11 @@ class VideoController extends Controller
             ->andWhere(['NOT', ['video_id' => $id]])
             ->byKeyword($video->title)
             ->limit(10)->all();
-    
-        return $this->render('view', [ 
-            'model' => $video , 
+
+        return $this->render('view', [
+            'model' => $video,
             'similarVideos' => $similarVideos,
+            'comments' => $comments
         ]);
     }
 
@@ -86,8 +94,8 @@ class VideoController extends Controller
     {
         $query = Video::find()->with('createdBy')->published()->latest();
 
-        if($keyword){
-           $query->byKeyword($keyword);
+        if ($keyword) {
+            $query->byKeyword($keyword);
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -104,13 +112,12 @@ class VideoController extends Controller
 
         $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
 
-        if(!$videoReaction){
+        if (!$videoReaction) {
             $videoReaction = new VideoLike();
             $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
-
-        }else if($videoReaction->type == VideoLike::TYPE_LIKE){
+        } else if ($videoReaction->type == VideoLike::TYPE_LIKE) {
             $videoReaction->delete();
-        }else{
+        } else {
             $videoReaction->delete();
             $this->saveReaction($id, $user_id, VideoLike::TYPE_LIKE);
         }
@@ -125,13 +132,12 @@ class VideoController extends Controller
 
         $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
 
-        if(!$videoReaction){
+        if (!$videoReaction) {
             $videoReaction = new VideoLike();
             $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
-
-        }else if($videoReaction->type == VideoLike::TYPE_DISLIKE){
+        } else if ($videoReaction->type == VideoLike::TYPE_DISLIKE) {
             $videoReaction->delete();
-        }else{
+        } else {
             $videoReaction->delete();
             $this->saveReaction($id, $user_id, VideoLike::TYPE_DISLIKE);
         }
@@ -145,16 +151,16 @@ class VideoController extends Controller
         $user_id = Yii::$app->user->id;
 
         $watchLater = WatchLater::find()
-            ->andWhere(['user_id'=> $user_id, 'video_id' => $video_id])
+            ->andWhere(['user_id' => $user_id, 'video_id' => $video_id])
             ->one();
 
-        if(!$watchLater){
+        if (!$watchLater) {
             $watchLater = new WatchLater();
             $watchLater->user_id = $user_id;
             $watchLater->video_id = $video_id;
             $watchLater->created_at = time();
             $watchLater->save(false);
-        }        
+        }
         return $this->renderAjax('/partial/button/_watch_later_button', ['model' => $video]);
     }
 
@@ -162,7 +168,7 @@ class VideoController extends Controller
     {
         $video = Video::findOne($id);
 
-        if(!$video){
+        if (!$video) {
             throw new NotFoundHttpException('Video does not exists!');
         }
         return $video;
@@ -177,5 +183,4 @@ class VideoController extends Controller
         $videoReaction->created_at = time();
         $videoReaction->save();
     }
-
 }

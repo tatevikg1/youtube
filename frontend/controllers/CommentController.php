@@ -64,8 +64,8 @@ class CommentController extends \yii\web\Controller
             $comment->parent_id = Yii::$app->request->post('comment_id');
             $comment->save();
 
-            return $this->renderAjax('/partial/comment/reply', [
-                'comment_id' => Yii::$app->request->post('comment_id'),
+            return $this->renderAjax('/partial/comment/_comment', [
+                'comment' => $comment
             ]);
         }
         $comment->save();
@@ -93,7 +93,7 @@ class CommentController extends \yii\web\Controller
             $this->saveReaction($id, $user_id, CommentLike::TYPE_LIKE);
         }
 
-        return $this->renderAjax('/partial/button/_comment_reaction_buttons', ['model' => $comment]);
+        return $this->renderAjax('/partial/comment/_reaction_buttons', ['model' => $comment]);
     }
 
     public function actionDislike($id)
@@ -114,14 +114,20 @@ class CommentController extends \yii\web\Controller
             $this->saveReaction($id, $user_id, CommentLike::TYPE_DISLIKE);
         }
 
-        return $this->renderAjax('/partial/button/_comment_reaction_buttons', ['model' => $comment]);
+        return $this->renderAjax('/partial/comment/_reaction_buttons', ['model' => $comment]);
     }
 
-    public function actionGet_reply_field($comment_id)
-    {
-        $comment = Comment::findOne(['id' => $comment_id]);
-        return $this->renderAjax('/partial/comment/_reply', ['comment' => $comment]);
-    }
+    // public function actionGet_reply_field($comment_id)
+    // {
+    //     $comment = Comment::findOne(['id' => $comment_id]);
+    //     return $this->renderAjax('/partial/comment/_reply', ['comment' => $comment]);
+    // }
+
+    // public function actionGet_comment_replies($comment_id)
+    // {
+    //     $comments = Comment::find()->where(['parent_id' => $comment_id])->all();
+    //     return $this->renderAjax('/partial/comment/_comments', ['comments' => $comments]);
+    // }
 
     protected function findComment($id)
     {

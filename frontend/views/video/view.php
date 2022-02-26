@@ -88,9 +88,7 @@ use yii\widgets\Pjax;
                 </div>
             <?php endif ?>
             
-            <?php foreach (array_reverse($model->comments ) as $comment)
-                echo $this->render('/partial/comment/_comment', ['comment' => $comment]);
-            ?>
+            <?= $this->render('/partial/comment/_comments', ['comments' => $comments]);?>
         </div>
     </div>
 
