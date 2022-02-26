@@ -6,7 +6,6 @@ use yii\helpers\Url;
 
 ?>
 <div class="row">
-
     <form data-pjax="1" method="post" action="<?php echo Url::to(['/comment/like', 'id' => $model->id]) ?>" class="btn btn-sm" style="<?= $model->isLikedBy(Yii::$app->user->id) ? 'color:blue' : 'color:grey' ?>" data-method="post">
 
         <button type="submit" class="reactionbtn" style="<?= $model->isLikedBy(Yii::$app->user->id) ? 'color:blue' : 'color:grey' ?>">

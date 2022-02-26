@@ -14,6 +14,7 @@ use yii\widgets\Pjax;
         <input type="hidden" value="<?= $comment->id ?>" name="comment_id">
         <div class="action-buttons text-right mt-2">
             <button type="button" class="btn btn-light btn-cancel" onclick="hideReplyField('<?= $comment->id ?>')">Cancel</button>
+
             <button class="btn btn-secondary btn-save">Reply</button>
         </div>
     </form>   
