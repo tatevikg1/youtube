@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 
 ?>
 
-<?php Pjax::begin() ?>
+<?php Pjax::begin(['enablePushState' => false]) ?>
     <form class="comment-edit-section" method="post" data-pjax="1" 
             action="<?php echo \yii\helpers\Url::to(['/comment/create']) ?>">
         <textarea rows="1" class="form-control" name="text" placeholder="Add a public comment" id="comment_text"></textarea>

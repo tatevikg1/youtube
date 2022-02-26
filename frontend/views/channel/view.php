@@ -25,7 +25,7 @@ use yii\helpers\Html;
                     <small class="text-muted"><?= $model->getSubscribers()->count() ?> subscribers</small>
                 </div>
                 <div class="subscribe-btn">
-                    <?php Pjax::begin() ?>
+                    <?php Pjax::begin(['enablePushState' => false]) ?>
                         <?= $this->render('/partial/button/_subscribe_button', ['model' => $model])?>
                     <?php Pjax::end() ?>
                 </div>
