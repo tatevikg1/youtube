@@ -10,10 +10,10 @@ AppAsset::register($this);
 $this->beginContent('@frontend/views/layouts/base.php')
 ?>
 
-    <div class="wrap h-100 d-flex flex-column">
+    <div class="wrap h-100 d-flex flex-column ">
         <?php echo $this->render('_header') ?>
 
-        <main class="d-flex">
+        <main class="d-flex ml-5">
         
             <div class="content p-3">
                 <?= Alert::widget() ?>

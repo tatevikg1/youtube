@@ -41,11 +41,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Updates an existing Video model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * Updates an existing Profile model.
+     * If update is successful, the browser will be redirected to the '/' page.
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate()
     {
@@ -65,11 +63,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Deletes an existing Video model.
+     * Deletes an existing Profile model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -79,10 +75,10 @@ class ProfileController extends Controller
     }
 
     /**
-     * Finds the Video model based on its primary key value.
+     * Finds the Profile model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Video the loaded model
+     * @return Profile the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

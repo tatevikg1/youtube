@@ -25,6 +25,11 @@ class CommentController extends Controller
         ];
     }
 
+
+    /**
+     * Lists all Comments of the auth user.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $comments = Comment::find()

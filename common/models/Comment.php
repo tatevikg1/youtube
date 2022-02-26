@@ -40,9 +40,9 @@ class Comment extends \yii\db\ActiveRecord
             [['text'], 'string'],
             [['parent_id', 'created_by', 'created_at', 'updated_at'], 'integer'],
             [['video_id'], 'string', 'max' => 16],
-            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::className(), 'targetAttribute' => ['parent_id' => 'id']],
-            [['video_id'], 'exist', 'skipOnError' => true, 'targetClass' => Video::className(), 'targetAttribute' => ['video_id' => 'video_id']],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::class, 'targetAttribute' => ['parent_id' => 'id']],
+            [['video_id'], 'exist', 'skipOnError' => true, 'targetClass' => Video::class, 'targetAttribute' => ['video_id' => 'video_id']],
         ];
     }
 
@@ -69,7 +69,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -79,7 +79,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(Comment::className(), ['id' => 'parent_id']);
+        return $this->hasOne(Comment::class, ['id' => 'parent_id']);
     }
 
     /**
@@ -89,7 +89,7 @@ class Comment extends \yii\db\ActiveRecord
      */
     public function getComments()
     {
-        return $this->hasMany(Comment::className(), ['parent_id' => 'id']);
+        return $this->hasMany(Comment::class, ['parent_id' => 'id']);
     }
 
     /**
@@ -121,13 +121,17 @@ class Comment extends \yii\db\ActiveRecord
         return CommentLike::find()->userReacted($user_id, $this->id)->disliked()->one();
     }
 
-    /*@return \yii\db\ActiveQuery*/
+    /**
+     * @return \yii\db\ActiveQuery
+    */
     public function getLikes()
     {
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->liked();
     }
 
-    /*@return \yii\db\ActiveQuery*/
+    /**
+     * @return \yii\db\ActiveQuery
+    */
     public function getDislikes()
     {
         return $this->hasMany(CommentLike::class, ['comment_id' => 'id'])->disliked();
