@@ -37,8 +37,8 @@ class CommentLike extends \yii\db\ActiveRecord
         return [
             [['comment_id', 'user_id'], 'required'],
             [['comment_id', 'user_id', 'type', 'created_at'], 'integer'],
-            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::className(), 'targetAttribute' => ['comment_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['comment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Comment::class, 'targetAttribute' => ['comment_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -63,7 +63,7 @@ class CommentLike extends \yii\db\ActiveRecord
      */
     public function getComment()
     {
-        return $this->hasOne(Comment::className(), ['id' => 'comment_id']);
+        return $this->hasOne(Comment::class, ['id' => 'comment_id']);
     }
 
     /**
@@ -73,7 +73,7 @@ class CommentLike extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**

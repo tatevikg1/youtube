@@ -33,8 +33,8 @@ class WatchLater extends \yii\db\ActiveRecord
         return [
             [['user_id', 'created_at'], 'integer'],
             [['video_id'], 'string', 'max' => 16],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['video_id'], 'exist', 'skipOnError' => true, 'targetClass' => Video::className(), 'targetAttribute' => ['video_id' => 'video_id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['video_id'], 'exist', 'skipOnError' => true, 'targetClass' => Video::class, 'targetAttribute' => ['video_id' => 'video_id']],
         ];
     }
 
@@ -58,7 +58,7 @@ class WatchLater extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -68,7 +68,7 @@ class WatchLater extends \yii\db\ActiveRecord
      */
     public function getVideo()
     {
-        return $this->hasOne(Video::className(), ['video_id' => 'video_id']);
+        return $this->hasOne(Video::class, ['video_id' => 'video_id']);
     }
 
     /**
