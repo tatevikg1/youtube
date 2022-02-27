@@ -43,7 +43,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
         ];
     }
 
@@ -226,6 +226,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('subscriber', ['channel_id' => 'id']);
     }
 
+    public function getSubscriptions()
+    {
+        return $this->hasMany(User::class, ['id' => 'channel_id'])->viaTable('subscriber', ['user_id' => 'id']);
+    }
+
     /**
      * Gets query for [[Profile]].
      *
@@ -241,5 +246,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(Comment::class, ['user_id' => 'id']);
 
+    }
+
+    public function getVideos()
+    {
+        return $this->hasMany(Video::class, ['created_by' => 'id']);
     }
 }

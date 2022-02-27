@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use Yii;
@@ -6,6 +7,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\Comment;
+use common\models\User;
 
 /**
  * Site controller
@@ -60,7 +63,22 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $user = User::find()->where(['id' => Yii::$app->user->id])->one();
+        $commentsCount = Comment::find()
+            ->with('video', 'parent')
+            ->andWhere(['created_by' => Yii::$app->user->id])
+            ->count();
+
+        $videosCount = $user->getVideos()->count();
+        $subscribersCount = $user->getSubscribers()->count();
+        $subscriptionsCount = $user->getSubscriptions()->count();
+
+        return $this->render('index', [
+            'videosCount' => $videosCount,
+            'commentsCount' => $commentsCount,
+            'subscribersCount' => $subscribersCount,
+            'subscriptionsCount' => $subscriptionsCount
+        ]);
     }
 
     /**
