@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 if ($model->isInWatchList()){
     $url = Url::to(['/video/later_remove', 'video_id' => $model->video_id ]);
-    $style = "background-color:red";
+    $style = "background-color:#b90000";
 }else{
     $url = Url::to(['/video/later', 'video_id' => $model->video_id ]);
     $style = "color:white";

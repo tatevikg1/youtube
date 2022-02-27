@@ -163,8 +163,9 @@ hr {
     color: white;
     background-color: black;
     border-radius: 0;
-    padding: 3px 5px;
+    padding: 0px 4px;
     margin: 5px;
+    /* border-radius:50% */
     /* display: none; */
 }
 .watch-later-button:hover{
