@@ -150,19 +150,26 @@ class VideoController extends Controller
         $video = $this->findVideo($video_id);
         $user_id = Yii::$app->user->id;
 
-        $watchLater = WatchLater::find()
-            ->andWhere(['user_id' => $user_id, 'video_id' => $video_id])
-            ->one();
-
-        if (!$watchLater) {
-            $watchLater = new WatchLater();
-            $watchLater->user_id = $user_id;
-            $watchLater->video_id = $video_id;
-            $watchLater->created_at = time();
-            $watchLater->save(false);
-        }
+        $watchLater = new WatchLater();
+        $watchLater->user_id = $user_id;
+        $watchLater->video_id = $video_id;
+        $watchLater->created_at = time();
+        $watchLater->save(false);
         return $this->renderAjax('/partial/button/_watch_later_button', ['model' => $video]);
     }
+
+    public function actionLater_remove($video_id)
+    {
+        $video = $this->findVideo($video_id);
+        $user_id = Yii::$app->user->id;
+
+        WatchLater::find()
+            ->andWhere(['user_id' => $user_id, 'video_id' => $video_id])
+            ->one()->delete();
+
+        return $this->renderAjax('/partial/button/_watch_later_button', ['model' => $video]);
+    }
+
 
     protected function findVideo($id)
     {

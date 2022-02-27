@@ -237,4 +237,9 @@ class Video extends \yii\db\ActiveRecord
         return $this->hasMany(Comment::class, ['video_id' => 'video_id']);
     }
 
+    public function isInWatchList()
+    {
+        return WatchLater::find()->where(['user_id' => Yii::$app->user->id])->andWhere(['video_id' => $this->video_id])->one();
+    }
+
 }

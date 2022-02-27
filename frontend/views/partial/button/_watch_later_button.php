@@ -6,15 +6,22 @@
 
 use yii\helpers\Url;
 
+if ($model->isInWatchList()){
+    $url = Url::to(['/video/later_remove', 'video_id' => $model->video_id ]);
+    $style = "background-color:red";
+}else{
+    $url = Url::to(['/video/later', 'video_id' => $model->video_id ]);
+    $style = "color:white";
+}
 ?>
 
 
 <a data-toggle="tooltip" title="Watch later"
-    href="<?= Url::to(['/video/later', 'video_id' => $model->video_id ]) ?>" 
+    href="<?= $url ?>" 
     role="button"
     data-method="post"
     data-pjax="1"
-    style="color:white">
+    >
     
-    <button class="btn watch-later-button hide"><i class="fas fa-clock "></i></button>
+    <button class="btn watch-later-button hide" style="<?= $style ?>"><i class="fas fa-clock "></i></button>
 </a>

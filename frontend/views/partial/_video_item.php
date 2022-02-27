@@ -32,7 +32,7 @@ use yii\widgets\Pjax;
                 ['channel/view', 'username' =>  $model->createdBy->username],
                 ["class" => "channelname text-muted card-text m-0"])?>
         </p>
-        <p class="text-muted card-text m-0"> 
+        <p class="text-muted card-text m-0" style="font-size: 11px;"> 
             <?= $model->getViews()->count() ?> views • <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
         </p>
     </div>
