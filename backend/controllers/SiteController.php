@@ -70,8 +70,16 @@ class SiteController extends Controller
             ->count();
 
         $videosCount = $user->getVideos()->count();
-        $subscribersCount = $user->getSubscribers()->count();
-        $subscriptionsCount = $user->getSubscriptions()->count();
+        $subscribersCount = Yii::$app->cache->get('subscribers-'. $user->id);
+        if(!$subscribersCount){
+            $subscribersCount = $user->getSubscribers()->count();
+            Yii::$app->cache->set('subscribers-'. $user->id, $subscribersCount);
+        }
+        $subscriptionsCount = Yii::$app->cache->get('subscriptions-'. $user->id);
+        if(!$subscriptionsCount){
+            $subscriptionsCount = $user->getSubscriptions()->count();
+            Yii::$app->cache->set('subscriptions-'. $user->id, $subscriptionsCount);
+        }
 
         return $this->render('index', [
             'videosCount' => $videosCount,
