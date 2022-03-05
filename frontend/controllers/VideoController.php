@@ -9,6 +9,7 @@ use common\models\Video;
 use common\models\VideoLike;
 use common\models\VideoView;
 use common\models\WatchLater;
+use frontend\jobs\VideoLike as JobsVideoLike;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -51,6 +52,9 @@ class VideoController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()->with('createdBy')->published()->latest(),
+            'pagination' => [
+                'pageSize' => 10
+            ]
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider
@@ -107,9 +111,13 @@ class VideoController extends Controller
 
     public function actionLike($id)
     {
-        $video = $this->findVideo($id);
         $user_id = Yii::$app->user->id;
+        $video = $this->findVideo($id);
 
+        // Yii::$app->queue->push(new JobsVideoLike([
+        //     'userId' => $user_id, 
+        //     'videoId' => $id
+        // ]));
         $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
 
         if (!$videoReaction) {
@@ -129,6 +137,11 @@ class VideoController extends Controller
     {
         $video = $this->findVideo($id);
         $user_id = Yii::$app->user->id;
+
+        // Yii::$app->queue->push(new JobsVideoDislike([
+        //     'userId' => $user_id, 
+        //     'videoId' => $id
+        // ]));
 
         $videoReaction = VideoLike::find()->userReacted($user_id, $video->video_id)->one();
 

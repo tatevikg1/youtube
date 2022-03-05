@@ -42,13 +42,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'video/update/<id>' => 'video/update/',//makes url look nicer
+                'video/update/<id>' => 'video/update/', //makes url look nicer
             ],
         ],
         'assetManager' => [
-            'appendTimestamp' =>true,
+            'appendTimestamp' => true,
         ],
-
     ],
     'params' => $params,
 ];
